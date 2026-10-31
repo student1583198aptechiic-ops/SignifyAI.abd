@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SignifyAI - Sign Language Translator</title>
+    <link rel="stylesheet" href="/style.css" />
+    <meta property="og:image" content="https://bolt.new/static/og_default.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://bolt.new/static/og_default.png">
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span>SignifyAI</span>
+      </div>
+      <span id="status-pill" class="pill">Camera off</span>
+    </header>
+
+    <main class="layout">
+      <section class="card camera-card">
+        <div class="section-heading">
+          <h2>Live camera</h2>
+          <p class="muted">Hand tracking runs on your device. Video is never uploaded.</p>
+        </div>
+        <div class="video-frame">
+          <video id="video" playsinline muted></video>
+          <canvas id="overlay"></canvas>
+          <div id="camera-placeholder" class="placeholder">
+            <p>Your camera is off.</p>
+            <p class="muted">Press Start camera to begin translating.</p>
+          </div>
+        </div>
+        <div class="button-row">
+          <button id="start-btn" type="button" class="btn btn-primary">Start camera</button>
+          <button id="stop-btn" type="button" class="btn btn-ghost" disabled>Stop camera</button>
+        </div>
+        <p id="camera-message" class="notice" hidden></p>
+      </section>
+
+      <section class="card recognition-card">
+        <div class="section-heading">
+          <h2>Recognition</h2>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Hand</span>
+          <span id="hand-side" class="stat-value">None</span>
+        </div>
+        <div class="stat stat-large">
+          <span class="stat-label">Detected sign</span>
+          <strong id="gesture-name" class="gesture-name">Waiting</strong>
+        </div>
+        <div class="stat">
+          <span class="stat-label">Confidence</span>
+          <span id="confidence-text" class="stat-value">0%</span>
+        </div>
+        <div class="confidence-track" role="progressbar" aria-label="Recognition confidence" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+          <div id="confidence-fill" class="confidence-fill"></div>
+        </div>
+        <p id="recognition-status" class="muted">Start the camera to begin.</p>
+      </section>
+
+      <section class="card sentence-card">
+        <div class="section-heading">
+          <h2>Translation</h2>
+          <p class="muted">Signs you hold steady are added here.</p>
+        </div>
+        <div id="sentence" class="sentence" aria-live="polite"></div>
+        <div class="button-row">
+          <button id="undo-btn" type="button" class="btn btn-ghost">Undo</button>
+          <button id="clear-btn" type="button" class="btn btn-ghost">Clear text</button>
+        </div>
+        <div class="button-row">
+          <button id="speak-btn" type="button" class="btn btn-primary">Speak</button>
+          <button id="stop-speech-btn" type="button" class="btn btn-ghost">Stop speech</button>
+        </div>
+        <div class="field">
+          <label for="voice-select">Voice</label>
+          <select id="voice-select"></select>
+        </div>
+        <div class="field">
+          <label for="rate-range">Speed <span id="rate-value">1.0x</span></label>
+          <input id="rate-range" type="range" min="0.5" max="1.5" step="0.1" value="1" />
+        </div>
+        <p id="speech-notice" class="notice" hidden></p>
+      </section>
+
+      <section class="card train-card">
+        <div class="section-heading">
+          <h2>Teach a sign</h2>
+          <p class="muted">Only the signs you teach here are recognized. Anything else shows Unknown Gesture.</p>
+        </div>
+        <form id="train-form" class="train-form">
+          <div class="field">
+            <label for="word-input">Word for the sign</label>
+            <input id="word-input" type="text" maxlength="30" placeholder="e.g. hello" autocomplete="off" />
+          </div>
+          <button id="record-btn" type="submit" class="btn btn-primary">Record sign</button>
+        </form>
+        <p id="train-status" class="muted">Hold the sign steady for about one second after pressing Record.</p>
+        <ul id="trained-list" class="trained-list"></ul>
+      </section>
+    </main>
+
+    <script type="module" src="/js/app.js"></script>
+  </body>
+</html>
